@@ -7,15 +7,21 @@ from tabulate import tabulate
 import os
 import time
 
-df = pd.read_excel('Info For Asset Panda.xlsx', sheetname='Sheet1')
+df = pd.read_excel('spares.xlsx', sheetname='Sheet1')
+shipDateUrl = "https://www.dell.com/support/components/dashboard/us/en/04/Warranty/GetWarrantyDetails"
+deviceNameUrl = "https://www.dell.com/support/home/us/en/04/product-support/servicetag/9ybvsy1/events"
 
 serialNums = df['Serial #']
-print(serialNum)
+print(serialNums)
 
 for serialNum in serialNums:
-
-
-r = requests.post("http://example.com/page", data=dict(
-    email="me@domain.com",
-    password="secret_value"
-))
+    r = requests.post(shipDateUrl, data=dict(
+        serviceTag=serialNum,
+        isSerializedProduct=False
+    ))
+    
+    print(r)
+    
+    r1 = requests.post(shipDateUrl)
+    print(r1)
+    time.sleep(1)
