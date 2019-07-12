@@ -1,33 +1,38 @@
 from bs4 import BeautifulSoup
-import re
 import pandas as pd
-from pandas import ExcelWriter
-from pandas import ExcelFile
-from tabulate import tabulate
 import os
 import time
 import requests
 import openpyxl
 from datetime import datetime
+import argparse
+import math
+import numpy as np
 
-df = pd.read_excel('spares.xlsx', sheet_name='Sheet1')
-writer = pd.ExcelWriter('spares.xlsx', engine='openpyxl', date='mm/dd/yyyy', mode='a')
 
+# excel sheet that we are reading
+df = pd.read_csv('sample.csv', na_values = ['', '.'])
+# url to the dell warrenty information
 shipDateUrl = "https://www.dell.com/support/components/dashboard/us/en/04/Warranty/GetWarrantyDetails"
+# url to get the device name
 deviceNameUrl = "https://www.dell.com/support/home/us/en/04/product-support/servicetag/9ybvsy1/events"
 
-i = 0
-
+# New csv with new info
+# store the model names and the ship dates
 modelNames = []
 shipDates = []
+
+# dictionary to store the old and new excel data
 dataToWrite = {}
 
-for serialNum in df['Serial Number']:
+i = 0
+# loop through the provided serial numbers
+for serialNum in df['Serial #']:
     r = requests.post(shipDateUrl, data=dict(
         serviceTag=serialNum,
         isSerializedProduct=False
     ))
-    
+
     if r.status_code == 200:
         soup = BeautifulSoup(r.text, "html.parser")
         tds = soup.find_all("td")
@@ -38,11 +43,11 @@ for serialNum in df['Serial Number']:
             if index != -1:
                 shipDate = data[(data.find(": ") + 2):]
                 shipDate = datetime.strptime(shipDate, '%d %b %Y').date()
-                shipDate = datetime.strftime(shipDate, '%m/%d/%y')
+                shipDate = datetime.strftime(shipDate, '%m/%d/%Y')
         shipDates.insert(i, shipDate)
     else:
         shipDates.insert(i, "")
-    
+
     # get name of device
     r = requests.post("https://www.dell.com/support/home/us/en/04/product-support/servicetag/{}/events".format(serialNum))
     if r.status_code == 200:
@@ -59,14 +64,33 @@ for serialNum in df['Serial Number']:
 
     i += 1
 
+# Serial #	Host Name	Purchase date	Cost	Purchase From	Manufacturer
+# Model	Status	Date Added	Building	Room	Category	Name	User
+# Department	Warranty Info	Warranty Expiration Date (Dell)	Warranty
+# Expiration Date (Apple/Microsoft)	Warranty Expiration Date
+# Last Audited Date	Last Audited By	Time Since Last Audit	MAC Address	Wireless
+# MAC Address	Student Machine	Peripherals attached	Dell Kace	Bomgar
+# Replacement Date	Date Requested	Expected Return Date	Notes	Upgrade Date
+# System Upgrades	SCCM ID	Images	Archived
+
+
+i = 0
+# add old info to new sheet
 for row in df:
-    if row == 'Serial Number':
+    if row == 'Serial #':
         df[row] = [x.upper() for x in df[row]]
     dataToWrite.update({row : df[row]})
-dataToWrite.update( {'Ship Date' : (shipDates)} )
+for cell in df['Host Name']:
+    if (pd.isnull(cell)):
+        df['Host Name'][i] = df['Serial #'][i]
+    i += 1
+
+# add new info to new sheet
+dataToWrite.update( {'Purchase date' : (shipDates)} )
 dataToWrite.update({'Model' : modelNames})
 
+# write the data to the new sheet
 writeData = pd.DataFrame(dataToWrite)
-writeData.to_excel(writer, sheet_name='updated')
-writer.save()
-writer.close()
+writeData.to_csv('done.csv', index=False)
+
+print(pd.read_csv('done.csv', na_values = ['', '.']))
