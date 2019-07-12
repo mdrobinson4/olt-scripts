@@ -23,6 +23,6 @@ for serialNum in serialNums:
     
     print(r.text)
     
-    r1 = requests.post(shipDateUrl)
-    print(r1.text)
+    #r1 = requests.post(shipDateUrl)
+    #print(r1.text)
     time.sleep(1)
