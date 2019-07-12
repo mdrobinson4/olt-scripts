@@ -23,7 +23,11 @@ for serialNum in serialNums:
     
     soup = BeautifulSoup(r.text, "html.parser")
     tds = soup.find_all("td")
-    print("TDs: {}".format(tds))
+    shipDate = ""
+    for dataCell in tds:
+        if dataCell.find("Ship Date") != -1:
+            shipDate = dataCell[12:]
+    print("ship date: {}".format(shipDate))
     
     #print(r.text)
     
