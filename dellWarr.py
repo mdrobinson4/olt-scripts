@@ -21,8 +21,8 @@ for serialNum in serialNums:
         isSerializedProduct=False
     ))
     
-    print(r)
+    print(r.text)
     
     r1 = requests.post(shipDateUrl)
-    print(r1)
+    print(r1.text)
     time.sleep(1)
