@@ -21,7 +21,11 @@ for serialNum in serialNums:
         isSerializedProduct=False
     ))
     
-    print(r.text)
+    soup = BeautifulSoup(r.text, "html.parser")
+    tds = soup.find_all("td")
+    print("TDs: {}".format(tds))
+    
+    #print(r.text)
     
     #r1 = requests.post(shipDateUrl)
     #print(r1.text)
