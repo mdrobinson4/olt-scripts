@@ -6,6 +6,7 @@ from pandas import ExcelFile
 from tabulate import tabulate
 import os
 import time
+import requests
 
 df = pd.read_excel('spares.xlsx', sheetname='Sheet1')
 shipDateUrl = "https://www.dell.com/support/components/dashboard/us/en/04/Warranty/GetWarrantyDetails"
