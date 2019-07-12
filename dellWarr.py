@@ -11,7 +11,7 @@ df = pd.read_excel('spares.xlsx', sheetname='Sheet1')
 shipDateUrl = "https://www.dell.com/support/components/dashboard/us/en/04/Warranty/GetWarrantyDetails"
 deviceNameUrl = "https://www.dell.com/support/home/us/en/04/product-support/servicetag/9ybvsy1/events"
 
-serialNums = df['Serial #']
+serialNums = df['Serial Number']
 print(serialNums)
 
 for serialNum in serialNums:
