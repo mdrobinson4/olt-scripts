@@ -27,7 +27,7 @@ for serialNum in serialNums:
     for dataCell in tds:
         if dataCell.find("Ship Date") != -1:
             dataCell = str(dataCell)
-            shipDate = dataCell[12:]
+            shipDate = dataCell
     print("ship date: {}".format(shipDate))
     
     #print(r.text)
