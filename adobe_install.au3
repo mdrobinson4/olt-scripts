@@ -13,7 +13,7 @@ Func install()
 	ControlClick("Adobe Digital Editions 4.5.10 Setup", "&Next >", 1)
 	ControlClick("Adobe Digital Editions", "&Install", 1)
 	; Decline offer to install norton
-	Local $win = WinWait("Installing Adobe Digital Editions", "", 10)
+	Local $win = WinWait("Installing Adobe Digital Editions", "", 3)
 	If Not $win == 0 Then
 		ControlClick("Installing Adobe Digital Editions", "No, Thank You", 1076)
 	EndIf
