@@ -10,10 +10,13 @@ Func install()
     ; Send a mouse click to the edit control of Notepad using the handle returned by WinWait.
     ControlClick("Adobe Digital Editions 4.5.10 Setup: License Agreement", "I &accept the terms of the License Agreement", 1034)
 	ControlClick("Adobe Digital Editions 4.5.10 Setup: License Agreement", "&Next >", 1)
-	ControlClick("Adobe Digital Editions 4.5.10 Setup", "&Install >", 1)
+	ControlClick("Adobe Digital Editions 4.5.10 Setup", "&Next >", 1)
+	ControlClick("Adobe Digital Editions", "&Install", 1)
+	; Decline offer to install norton
 	WinWaitActive("Installing Adobe Digital Editions", "No, Thank You")
 	ControlClick("Installing Adobe Digital Editions", "No, Thank You", 1146)
+
 	WinWait("Adobe Digital Editions 4.5.10 Setup", "&Close", 10)
 	ControlClick("Adobe Digital Editions 4.5.10 Setup", "&Close", 1)
     WinClose($hWnd)
-EndFunc   ;==>Example
+EndFunc
