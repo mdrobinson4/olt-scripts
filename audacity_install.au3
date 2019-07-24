@@ -24,6 +24,12 @@ Func audacity()
 	Local $x = WinWait("Setup - Audacity", "&Next >")
 	ControlClick("Setup - Audacity", "&Next >", "[CLASSNN:TNewButton3]")
 	ControlClick("Setup - Audacity", "&Finish", "[CLASSNN:TNewButton3]")
+
+	Local $win5 = WinWait("Audacity", "", 3)
+
+	If Not $win5 = 0 Then
+		WinKill("Audacity", "")
+	EndIf
 EndFunc
 
 Func ffmgeg()
