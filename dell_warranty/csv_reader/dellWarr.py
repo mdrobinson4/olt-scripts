@@ -11,7 +11,7 @@ import numpy as np
 
 
 # excel sheet that we are reading
-df = pd.read_csv('sample.csv', na_values = ['', '.'])
+df = pd.read_csv('spares.csv', na_values = ['', '.'])
 # url to the dell warrenty information
 shipDateUrl = "https://www.dell.com/support/components/dashboard/us/en/04/Warranty/GetWarrantyDetails"
 # url to get the device name
